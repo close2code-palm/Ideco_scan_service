@@ -1,9 +1,13 @@
-# from syslog import syslog
+"""Web application, REST endpoint of scanner
+module also contains supportive function
+and used as execution point"""
 
 import ipaddress as ipaddress
+import syslog
 
 import aiohttp.web
 from aiohttp import web
+from aiohttp.web_routedef import Request
 
 from scanner import run_scan
 
@@ -20,28 +24,29 @@ def validate_data(ip, s_p, e_p):
             raise ValueError
     except ValueError:
         pass
-        # syslog(syslog.LOG_ERR, 'Provided values are not valid')
+        syslog.syslog(syslog.LOG_ERR, 'Provided values are not valid')
     else:
         return ip, s_p, e_p
 
 
 @routes.get('/scan/{ip}/{begin_port:\d+}/{end_port:\d+}')
-async def process_scan(request):
+async def process_scan(request: Request):
     """Handling request and serves response with results"""
-    # syslog('Scan request received')
+    syslog.syslog(f'Scan request received from {request.remote}')
     ip_for_scan = request.match_info['ip']
     begin_port = request.match_info['begin_port']
     end_port = request.match_info['end_port']
     if valid := validate_data(ip_for_scan, begin_port, end_port):
-        # syslog('Starting scan with given parameters')
+        syslog.syslog('Starting scan with given parameters')
         ip_for_scan, begin_port, end_port = valid
         scan_run = await run_scan(ip=ip_for_scan, start_port=begin_port, end_port=end_port)
         scan_result = [{'port': f'{p}', 'state': f'{s}'} for s, p in scan_run]
         return web.json_response(scan_result)
+    syslog.syslog(syslog.LOG_ERR, f'Request from {request.remote} is not processable')
     raise aiohttp.web.HTTPBadRequest
 
 
 app = web.Application()
 app.add_routes(routes)
+syslog.syslog('Web application is starting')
 web.run_app(app, host='localhost', port=9091)
-# syslog('Web application started')
