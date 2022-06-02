@@ -3,7 +3,7 @@
 from aiohttp import web
 import syslog
 
-from sswa.rest_api_handlers import runable_app
+from rest_api_handlers import runable_app
 
 PORT = 9091
 
