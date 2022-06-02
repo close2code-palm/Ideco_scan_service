@@ -1,6 +1,6 @@
 """Web application, REST endpoint of scanner
 module also contains supportive function
-and used as execution point"""
+"""
 
 import ipaddress as ipaddress
 import syslog

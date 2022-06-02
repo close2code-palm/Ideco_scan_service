@@ -1,3 +1,5 @@
+"""Used as entry point"""
+
 from aiohttp import web
 
 from sswa.rest_api_handlers import runable_app
