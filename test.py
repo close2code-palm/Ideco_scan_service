@@ -12,7 +12,10 @@ class ScannerPointTestCase(AioHTTPTestCase):
         return runable_app
 
     async def test_scan_res(self):
-        async with self.client.request('GET', '/scan/127.0.0.1/5430/5435') as resp:
+        async with self.client.request('GET', '/scan/127.0.0.1/5430/5435') as resp:  # dummy host
             self.assertEqual(resp.status, 200)
             answer = await resp.json()
         self.assertIn({'port': '5433', 'state': 'open'}, answer, )
+
+    async def test_scan_fail(self):
+        async with self.client.request('GET', '/scan/127.0.0.1/') as

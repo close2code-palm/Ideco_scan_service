@@ -20,7 +20,7 @@ def validate_data(ip, s_p, e_p):
         ipaddress.ip_address(ip)
         s_p = int(s_p)
         e_p = int(e_p)
-        if s_p > e_p or s_p < 1 or e_p < 1:
+        if s_p > e_p or 65535 < s_p < 1 or 65535 < e_p < 1:
             raise ValueError
     except ValueError:
         pass
