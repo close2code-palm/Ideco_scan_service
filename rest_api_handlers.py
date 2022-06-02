@@ -48,5 +48,7 @@ async def process_scan(request: Request):
 
 app = web.Application()
 app.add_routes(routes)
-syslog.syslog('Web application is starting')
-web.run_app(app, host='localhost', port=9091)
+
+runable_app = app
+# syslog.syslog('Web application is starting')
+# web.run_app(app, host='localhost', port=9091)
