@@ -43,7 +43,7 @@ async def process_scan(request: Request):
 
 
 app = web.Application()
-scan_route = '/scan/{ip}/{begin_port:\d+}/{end_port:\d+}'
+scan_route = r'/scan/{ip}/{begin_port:\d+}/{end_port:\d+}'
 app.add_routes([web.get(scan_route,
                         process_scan)])
 

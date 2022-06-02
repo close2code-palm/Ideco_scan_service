@@ -2,7 +2,7 @@ from aiohttp import web
 from aiohttp.abc import Application
 from aiohttp.test_utils import AioHTTPTestCase
 
-from sswa.rest_api_handlers import runable_app, process_scan
+from sswa.rest_api_handlers import process_scan, scan_route
 
 
 class ScannerPointTestCase(AioHTTPTestCase):
@@ -10,7 +10,7 @@ class ScannerPointTestCase(AioHTTPTestCase):
     async def get_application(self) -> Application:
         app = web.Application()
         app.add_routes([web.get(
-    '/scan/{ip}/{begin_port:\d+}/{end_port:\d+}', process_scan)])
+            scan_route, process_scan)])
         return app
 
     async def test_scan_res(self):
