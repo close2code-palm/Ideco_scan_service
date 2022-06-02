@@ -1,9 +1,7 @@
-from aiohttp import web
 from aiohttp.abc import Application
 from aiohttp.test_utils import AioHTTPTestCase
 
-from rest_api_handlers import app, runable_app
-from scanner import run_scan
+from rest_api_handlers import runable_app
 
 
 class ScannerPointTestCase(AioHTTPTestCase):
@@ -18,4 +16,5 @@ class ScannerPointTestCase(AioHTTPTestCase):
         self.assertIn({'port': '5433', 'state': 'open'}, answer, )
 
     async def test_scan_fail(self):
-        async with self.client.request('GET', '/scan/127.0.0.1/') as
+        async with self.client.request('GET', '/scan/127.0.0.1/555555/-2') as response:
+            self.assertEqual(response.status, 400)
