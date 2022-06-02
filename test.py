@@ -10,7 +10,7 @@ class ScannerPointTestCase(AioHTTPTestCase):
     async def get_application(self) -> Application:
         app = web.Application()
         app.add_routes([web.get(
-    '/scan/{ip}/{begin_port:\d+}/{end_port:\d+}', process_scan)])
+            r'/scan/{ip}/{begin_port:\d+}/{end_port:\d+}', process_scan)])
         return app
 
     async def test_scan_res(self):

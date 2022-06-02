@@ -48,7 +48,7 @@ async def process_scan(request: Request):
 
 app = web.Application()
 app.add_routes([web.get(
-    '/scan/{ip}/{begin_port:\d+}/{end_port:\d+}', process_scan)])
+    r'/scan/{ip}/{begin_port:\d+}/{end_port:\d+}', process_scan)])
 
 runable_app = app
 # syslog.syslog('Web application is starting')
