@@ -29,7 +29,6 @@ def validate_data(ip, s_p, e_p):
         return ip, s_p, e_p
 
 
-# @routes.get('/scan/{ip}/{begin_port:\d+}/{end_port:\d+}')
 async def process_scan(request: Request):
     """Handling request and serves response with results"""
     # syslog.syslog(f'Scan request received from {request.remote}')
@@ -37,12 +36,12 @@ async def process_scan(request: Request):
     begin_port = request.match_info['begin_port']
     end_port = request.match_info['end_port']
     if valid := validate_data(ip_for_scan, begin_port, end_port):
-        # syslog.syslog('Starting scan with given parameters')
+        syslog.syslog('Starting scan with given parameters')
         ip_for_scan, begin_port, end_port = valid
         scan_run = await run_scan(ip=ip_for_scan, start_port=begin_port, end_port=end_port)
         scan_result = [{'port': f'{p}', 'state': f'{s}'} for s, p in scan_run]
         return web.json_response(scan_result)
-    # syslog.syslog(syslog.LOG_ERR, f'Request from {request.remote} is not processable')
+    syslog.syslog(syslog.LOG_ERR, f'Request from {request.remote} is not processable')
     raise aiohttp.web.HTTPBadRequest
 
 
