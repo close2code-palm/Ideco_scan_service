@@ -1,13 +1,17 @@
+from aiohttp import web
 from aiohttp.abc import Application
 from aiohttp.test_utils import AioHTTPTestCase
 
-from rest_api_handlers import runable_app
+from sswa.rest_api_handlers import runable_app, process_scan
 
 
 class ScannerPointTestCase(AioHTTPTestCase):
 
     async def get_application(self) -> Application:
-        return runable_app
+        app = web.Application()
+        app.add_routes([web.get(
+    '/scan/{ip}/{begin_port:\d+}/{end_port:\d+}', process_scan)])
+        return app
 
     async def test_scan_res(self):
         async with self.client.request('GET', '/scan/127.0.0.1/5430/5435') as resp:  # dummy host
@@ -16,5 +20,7 @@ class ScannerPointTestCase(AioHTTPTestCase):
         self.assertIn({'port': '5433', 'state': 'open'}, answer, )
 
     async def test_scan_fail(self):
-        async with self.client.request('GET', '/scan/127.0.0.1/555555/-2') as response:
+        async with self.client.request('GET', '/scan/127.0.0.1/65555/65666') as response:
             self.assertEqual(response.status, 400)
+            response = await response.text()
+            self.assertIn('Bad', response)
