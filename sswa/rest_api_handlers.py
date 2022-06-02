@@ -1,6 +1,6 @@
 """Web application, REST endpoint of scanner
 module also contains supportive function
-and used as execution point"""
+"""
 
 import ipaddress as ipaddress
 import syslog
@@ -9,9 +9,7 @@ import aiohttp.web
 from aiohttp import web
 from aiohttp.web_routedef import Request
 
-from scanner import run_scan
-
-routes = web.RouteTableDef()
+from sswa.scanner import run_scan
 
 
 def validate_data(ip, s_p, e_p):
@@ -20,16 +18,14 @@ def validate_data(ip, s_p, e_p):
         ipaddress.ip_address(ip)
         s_p = int(s_p)
         e_p = int(e_p)
-        if s_p > e_p or 65535 < s_p < 1 or 65535 < e_p < 1:
+        if s_p > e_p or s_p < 1 or e_p < 1 or 65535 < e_p:
             raise ValueError
     except ValueError:
-        pass
         syslog.syslog(syslog.LOG_ERR, 'Provided values are not valid')
     else:
         return ip, s_p, e_p
 
 
-@routes.get('/scan/{ip}/{begin_port:\d+}/{end_port:\d+}')
 async def process_scan(request: Request):
     """Handling request and serves response with results"""
     syslog.syslog(f'Scan request received from {request.remote}')
@@ -47,8 +43,8 @@ async def process_scan(request: Request):
 
 
 app = web.Application()
-app.add_routes(routes)
+scan_route = r'/scan/{ip}/{begin_port:\d+}/{end_port:\d+}'
+app.add_routes([web.get(scan_route,
+                        process_scan)])
 
 runable_app = app
-# syslog.syslog('Web application is starting')
-# web.run_app(app, host='localhost', port=9091)
