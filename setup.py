@@ -1,4 +1,4 @@
-from setuptools import setup, find_packages
+from setuptools import setup
 
 setup(
     name='sswa',
@@ -12,4 +12,7 @@ setup(
         'aiohttp',
         'python_version == 3.10',
     ],
+    license='MIT',
+    platforms=['linux-x86_x64', ],
+    long_description=open('README.md').read(),
 )
