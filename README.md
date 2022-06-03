@@ -14,4 +14,4 @@ Tests are available with python3 -m unittest test.py
 in build/bdist.linux-x86_64/rpm/SPECS/):
    - Make sure you have rpm-build installed
    - run python3 setup.py bdist_rpm
-   - after installation can be run with 'serve_scanner'
+   - after installation from package app can be run with 'serve_scanner'
