@@ -2,7 +2,7 @@ from aiohttp import web
 from aiohttp.abc import Application
 from aiohttp.test_utils import AioHTTPTestCase
 
-from sswa.rest_api_handlers import process_scan
+from sswa import process_scan
 
 
 class ScannerPointTestCase(AioHTTPTestCase):
@@ -20,7 +20,6 @@ class ScannerPointTestCase(AioHTTPTestCase):
                        f'{test_server_port}') as resp:
             self.assertEqual(resp.status, 200)
             answer = await resp.json()
-        print(self.server.port)
         self.assertIn({'port': f'{test_server_port}', 'state': 'open'}, answer, )
 
     async def test_scan_fail(self):
