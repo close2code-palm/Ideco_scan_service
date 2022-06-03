@@ -10,9 +10,14 @@ setup(
     url='https://github.com/close2code-palm/ideco_scan_service',
     install_requires=[
         'aiohttp',
-        'python_version == 3.10',
     ],
     license='MIT',
     platforms=['linux-x86_x64', ],
     long_description=open('README.md').read(),
+    entry_points={
+        'console_scripts': [
+            'serve_scanner=sswa.run_server:main'
+        ],
+    },
+    python_requires=">=3.7",
 )
