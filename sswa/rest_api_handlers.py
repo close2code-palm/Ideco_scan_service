@@ -9,7 +9,10 @@ import aiohttp.web
 from aiohttp import web
 from aiohttp.web_routedef import Request
 
-from scanner import run_scan
+try:
+    from scanner import run_scan
+except ModuleNotFoundError:
+    from sswa.scanner import run_scan
 
 
 def validate_data(ip, s_p, e_p):

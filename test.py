@@ -1,3 +1,5 @@
+"""Contains e2e tests"""
+
 from aiohttp import web
 from aiohttp.abc import Application
 from aiohttp.test_utils import AioHTTPTestCase
