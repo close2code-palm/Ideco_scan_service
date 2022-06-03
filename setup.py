@@ -9,6 +9,11 @@ setup(
     packages=['sswa'],
     install_requires=[
         'aiohttp',
-        'python_version == 3.10',
     ],
+    entry_points={
+        'console_scripts': [
+            'serve_scanner=sswa.run_server:main'
+        ],
+    },
+    python_requires=">=3.7",
 )
